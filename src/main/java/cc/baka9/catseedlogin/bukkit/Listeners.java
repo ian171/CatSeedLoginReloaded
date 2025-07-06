@@ -1,6 +1,7 @@
 package cc.baka9.catseedlogin.bukkit;
 
 import cc.baka9.catseedlogin.bukkit.database.Cache;
+import cc.baka9.catseedlogin.bukkit.gui.AnvilGui;
 import cc.baka9.catseedlogin.bukkit.object.LoginPlayer;
 import cc.baka9.catseedlogin.bukkit.object.LoginPlayerHelper;
 import cc.baka9.catseedlogin.bukkit.task.Task;
@@ -20,21 +21,23 @@ import org.bukkit.event.player.*;
 import java.util.regex.Pattern;
 
 public class Listeners implements Listener {
-
     private boolean playerIsNotMinecraftPlayer(Player p){
         return !p.getClass().getName().matches("org\\.bukkit\\.craftbukkit.*?\\.entity\\.CraftPlayer");
     }
 
+    private boolean isMinecraftPlayer(Entity p){
+        return p instanceof org.bukkit.entity.Player;
+    }
+
     @EventHandler
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event){
-        if (playerIsNotMinecraftPlayer(event.getPlayer())) return;
+        if (isMinecraftPlayer(event.getPlayer())) return;
         if (LoginPlayerHelper.isLogin(event.getPlayer().getName())) return;
         String input = event.getMessage().toLowerCase();
         for (Pattern regex : Config.Settings.CommandWhiteList) {
             if (regex.matcher(input).find()) return;
         }
         event.setCancelled(true);
-
     }
 
     @EventHandler
@@ -184,6 +187,12 @@ public class Listeners implements Listener {
         Cache.refresh(p.getName());
         if (Config.Settings.CanTpSpawnLocation) {
             p.teleport(Config.Settings.SpawnLocation);
+        }
+        AnvilGui anvilGui = new AnvilGui(p);
+        if(LoginPlayerHelper.isLogin(p.getName())){
+            anvilGui.openLoginGui(p);
+        }else {
+            anvilGui.openRegisterGui(p);
         }
     }
 

@@ -32,13 +32,7 @@ public class CommandLogin implements CommandExecutor {
         if (Objects.equals(Crypt.encrypt(name, args[0]), lp.getPassword().trim())) {
             LoginPlayerHelper.add(lp);
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.SUCCESS);
-            Bukkit.getServer().getPluginManager().callEvent(loginEvent);
-            sender.sendMessage(Config.Language.LOGIN_SUCCESS);
-            player.updateInventory();
-            LoginPlayerHelper.recordCurrentIP(player, lp);
-            if (Config.Settings.AfterLoginBack && Config.Settings.CanTpSpawnLocation) {
-                Config.getOfflineLocation(player).ifPresent(player::teleport);
-            }
+            handleLogin(sender, player, lp, loginEvent);
         } else {
             sender.sendMessage(Config.Language.LOGIN_FAIL);
             CatSeedPlayerLoginEvent loginEvent = new CatSeedPlayerLoginEvent(player, lp.getEmail(), CatSeedPlayerLoginEvent.Result.FAIL);
@@ -48,5 +42,15 @@ public class CommandLogin implements CommandExecutor {
             }
         }
         return true;
+    }
+
+    public static void handleLogin(CommandSender sender, Player player, LoginPlayer lp, CatSeedPlayerLoginEvent loginEvent) {
+        Bukkit.getServer().getPluginManager().callEvent(loginEvent);
+        sender.sendMessage(Config.Language.LOGIN_SUCCESS);
+        player.updateInventory();
+        LoginPlayerHelper.recordCurrentIP(player, lp);
+        if (Config.Settings.AfterLoginBack && Config.Settings.CanTpSpawnLocation) {
+            Config.getOfflineLocation(player).ifPresent(player::teleport);
+        }
     }
 }

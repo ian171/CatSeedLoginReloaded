@@ -48,14 +48,20 @@ public class LoginPlayerHelper {
     }
 
     public static boolean isLogin(String name){
-        synchronized (set) {
-            for (LoginPlayer lp : set) {
-                if (lp.getName().equals(name)) {
-                    return true;
+        if (name != null) {
+            synchronized (set) {
+                for (LoginPlayer lp : set) {
+                    if (lp.getName().equals(name)) {
+                        return true;
+                    }
                 }
+                return false;
             }
+        }else {
+            CatSeedLogin.getPlugin(CatSeedLogin.class).getLogger().warning("A Null Player's name");
             return false;
         }
+
     }
 
     public static boolean isRegister(String name){

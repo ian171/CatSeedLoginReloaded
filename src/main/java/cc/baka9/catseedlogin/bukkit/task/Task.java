@@ -13,7 +13,7 @@ public abstract class Task implements Runnable {
 
     private static TaskAutoKick taskAutoKick;
     private static TaskSendLoginMessage taskSendLoginMessage;
-    private static List<BukkitTask> bukkitTaskList = new ArrayList<>();
+    private static final List<BukkitTask> bukkitTaskList = new ArrayList<>();
 
     public static TaskAutoKick getTaskAutoKick(){
         if (taskAutoKick == null) {

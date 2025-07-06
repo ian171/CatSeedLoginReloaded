@@ -31,7 +31,7 @@ public class CatSeedLogin extends JavaPlugin {
             Config.load();
             Config.save();
         } catch (Exception e) {
-            e.printStackTrace();
+            getLogger().severe(e.getMessage());
             getServer().getLogger().warning("加载配置文件时出错，请检查你的配置文件。");
         }
         sql = Config.MySQL.Enable ? new MySQL(this) : new SQLite(this);
@@ -42,7 +42,7 @@ public class CatSeedLogin extends JavaPlugin {
             Cache.refreshAll();
         } catch (Exception e) {
             getLogger().warning("§c加载数据库时出错");
-            e.printStackTrace();
+            getServer().getLogger().severe(e.getMessage());
         }
         //Listeners
         getServer().getPluginManager().registerEvents(new Listeners(), this);
@@ -129,7 +129,7 @@ public class CatSeedLogin extends JavaPlugin {
             sql.getConnection().close();
         } catch (Exception e) {
             getLogger().warning("获取数据库连接时出错");
-            e.printStackTrace();
+            getLogger().severe(e.getMessage());
         }
         Communication.socketServerStop();
         super.onDisable();

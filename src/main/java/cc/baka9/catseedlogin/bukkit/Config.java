@@ -100,7 +100,7 @@ public class Config {
             AfterLoginBack = config.getBoolean("AfterLoginBack", resourceConfig.getBoolean("AfterLoginBack"));
             CanTpSpawnLocation = config.getBoolean("CanTpSpawnLocation", resourceConfig.getBoolean("CanTpSpawnLocation"));
             List<String> commandWhiteList = config.getStringList("CommandWhiteList");
-            if (commandWhiteList.size() == 0) {
+            if (commandWhiteList.isEmpty()) {
                 commandWhiteList = resourceConfig.getStringList("CommandWhiteList");
             }
             Settings.CommandWhiteList.clear();
