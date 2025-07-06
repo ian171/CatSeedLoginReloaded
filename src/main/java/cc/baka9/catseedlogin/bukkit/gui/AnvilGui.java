@@ -99,6 +99,7 @@ public class AnvilGui {
                             counter = counter + 1;
                             passwd_temp[0] = textbar.getText();
                             openLoginGui(p);
+                            counter = 0;
                         }
                         return CompletableFuture.completedFuture(Arrays.asList(AnvilGUI.ResponseAction.run(() -> {
                             // 完成时执行的代码
